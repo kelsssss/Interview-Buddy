@@ -1,4 +1,4 @@
-package com.example.interviewbuddy.ui
+package com.example.interviewbuddy.ui.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -17,22 +17,34 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.example.interviewbuddy.data.Author
+import com.example.interviewbuddy.data.Message
+import com.example.interviewbuddy.data.testRepository
 import com.example.interviewbuddy.ui.theme.InterviewBuddyTheme
 
 @Composable
-fun Message(
-    text: String
+fun MessageBubble(
+    message: Message
 ){
+    var author = message.author
+    var text = message.text
     Row(
         modifier = Modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.Start
+        horizontalArrangement =  when(author){
+            Author.SYSTEM -> Arrangement.Start
+            Author.USER -> Arrangement.End
+        }
+
     ){
         Box(
             modifier = Modifier.background(
-                color = Color.White,
-                shape = RoundedCornerShape(10.dp)
+                color = when(author){
+                    Author.SYSTEM -> Color.White
+                    Author.USER -> Color.Green
+                },
+                shape = RoundedCornerShape(15.dp)
             )
-                .padding(10.dp)
+                .padding(8.dp)
 
         ) {
             Text(text = text,
@@ -54,7 +66,9 @@ fun MessagePreview() {
                     .padding(innerPadding),
                 verticalArrangement = Arrangement.Bottom
             ) {
-                Message("There will be a question from Interview Buddy!")
+                MessageBubble(
+                    message = testRepository[0]
+                    )
             }
         }
 
