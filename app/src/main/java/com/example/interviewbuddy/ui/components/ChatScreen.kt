@@ -1,5 +1,6 @@
 package com.example.interviewbuddy.ui.components
 
+import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -27,19 +28,26 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.example.interviewbuddy.data.Author
+import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.interviewbuddy.ChatViewModel
+import com.example.interviewbuddy.data.Role
 import com.example.interviewbuddy.data.Message
 import com.example.interviewbuddy.data.testRepository
+import com.example.interviewbuddy.network.Retrofit
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 
 @Composable
 fun ChatScreen(){
     var text by remember { mutableStateOf("") }
     var listState = rememberLazyListState()
+    var viewModel: ChatViewModel = viewModel()
     Scaffold(
         modifier = Modifier.fillMaxSize()
     ) { innerPadding ->
+
         Column(
             modifier = Modifier.fillMaxSize()
                 .padding(innerPadding),
@@ -76,10 +84,22 @@ fun ChatScreen(){
                             if(text != "") {
                                 testRepository.add(
                                     Message(
-                                        text = text,
-                                        author = Author.USER
+                                        content = text,
+                                        role = Role.USER.type
                                     )
                                 )
+                                viewModel.viewModelScope.launch {
+                                    Log.d("MyLog", "Scope начался")
+                                    try{
+                                        Log.d("MyLog", "Try начался")
+                                        var responce = viewModel.askQuestion(text)
+                                        Log.d("MyLog", "Данные получены")
+                                        testRepository.add(responce.choices[0].message)
+                                        Log.d("MyLog", "Данные получены и сообщение добавлено в репозиторий")
+                                    } catch (e: Exception){
+                                        Log.d("MyLog", "Ошибка словлена")
+                                    }
+                                }
                                 text = ""
                             }
                         }

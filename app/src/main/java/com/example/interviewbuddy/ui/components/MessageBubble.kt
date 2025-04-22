@@ -17,7 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.example.interviewbuddy.data.Author
+import com.example.interviewbuddy.data.Role
 import com.example.interviewbuddy.data.Message
 import com.example.interviewbuddy.data.testRepository
 import com.example.interviewbuddy.ui.theme.InterviewBuddyTheme
@@ -26,21 +26,23 @@ import com.example.interviewbuddy.ui.theme.InterviewBuddyTheme
 fun MessageBubble(
     message: Message
 ){
-    var author = message.author
-    var text = message.text
+    var author = message.role
+    var text = message.content
     Row(
         modifier = Modifier.fillMaxWidth(),
         horizontalArrangement =  when(author){
-            Author.SYSTEM -> Arrangement.Start
-            Author.USER -> Arrangement.End
+            Role.ASSISTANT.type -> Arrangement.Start
+            Role.USER.type -> Arrangement.End
+            else -> Arrangement.Start
         }
 
     ){
         Box(
             modifier = Modifier.background(
                 color = when(author){
-                    Author.SYSTEM -> Color.White
-                    Author.USER -> Color.Green
+                    Role.ASSISTANT.type -> Color.White
+                    Role.USER.type -> Color.Green
+                    else -> {Color.Green}
                 },
                 shape = RoundedCornerShape(15.dp)
             )
@@ -49,7 +51,7 @@ fun MessageBubble(
         ) {
             Text(text = text,
                 color = Color.Black,
-                modifier = Modifier.widthIn(max = 220.dp))
+                modifier = Modifier.widthIn(max = 250.dp))
         }
     }
 }
