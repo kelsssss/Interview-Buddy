@@ -21,6 +21,8 @@ import com.example.interviewbuddy.data.Message
 import com.example.interviewbuddy.data.Role
 import com.example.interviewbuddy.data.chatMessagesList
 import com.example.interviewbuddy.ui.theme.InterviewBuddyTheme
+import com.halilibo.richtext.markdown.Markdown
+import com.halilibo.richtext.ui.RichText
 
 @Composable
 fun MessageBubble(
@@ -52,11 +54,21 @@ fun MessageBubble(
                 .padding(8.dp)
 
         ) {
-            Text(
-                text = text,
-                color = Color.Black,
-                modifier = Modifier.widthIn(max = 250.dp)
-            )
+
+            //TODO: Проверить нормально MarkDown
+            RichText(
+                modifier = Modifier.widthIn(max = 250.dp),
+            ) {
+                Markdown(
+                    content = text
+                )
+
+            }
+//            Text(
+//                text = text,
+//                color = Color.Black,
+//                modifier = Modifier.widthIn(max = 250.dp)
+//            )
         }
     }
 }

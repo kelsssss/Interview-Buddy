@@ -108,6 +108,8 @@ dependencies {
 
     implementation(libs.kotlinx.serialization.json)
 
+    implementation(libs.richtext.commonmark)
+
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
