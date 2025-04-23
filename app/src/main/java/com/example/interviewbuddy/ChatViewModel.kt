@@ -1,22 +1,18 @@
 package com.example.interviewbuddy
 
+import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.lifecycle.ViewModel
 import com.example.interviewbuddy.data.Message
 import com.example.interviewbuddy.data.QuestionRequest
 import com.example.interviewbuddy.data.QuestionResponce
 import com.example.interviewbuddy.network.Retrofit
 
-class ChatViewModel: ViewModel() {
+class ChatViewModel : ViewModel() {
     var api = Retrofit.apiService
-    suspend fun askQuestion(content: String) : QuestionResponce{
+    suspend fun askQuestion(messages: SnapshotStateList<Message>): QuestionResponce {
         return api.askQuestion(
-            questionRequest =  QuestionRequest(
-                messages = listOf<Message>(
-                Message(
-                    role = "user",
-                    content = content
-                )
-            )
+            questionRequest = QuestionRequest(
+                messages = messages
             )
         )
     }

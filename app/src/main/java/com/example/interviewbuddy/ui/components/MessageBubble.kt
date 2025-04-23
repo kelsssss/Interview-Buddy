@@ -17,41 +17,46 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.example.interviewbuddy.data.Role
 import com.example.interviewbuddy.data.Message
-import com.example.interviewbuddy.data.testRepository
+import com.example.interviewbuddy.data.Role
+import com.example.interviewbuddy.data.chatMessagesList
 import com.example.interviewbuddy.ui.theme.InterviewBuddyTheme
 
 @Composable
 fun MessageBubble(
     message: Message
-){
+) {
     var author = message.role
     var text = message.content
     Row(
         modifier = Modifier.fillMaxWidth(),
-        horizontalArrangement =  when(author){
+        horizontalArrangement = when (author) {
             Role.ASSISTANT.type -> Arrangement.Start
             Role.USER.type -> Arrangement.End
             else -> Arrangement.Start
         }
 
-    ){
+    ) {
         Box(
-            modifier = Modifier.background(
-                color = when(author){
-                    Role.ASSISTANT.type -> Color.White
-                    Role.USER.type -> Color.Green
-                    else -> {Color.Green}
-                },
-                shape = RoundedCornerShape(15.dp)
-            )
+            modifier = Modifier
+                .background(
+                    color = when (author) {
+                        Role.ASSISTANT.type -> Color.White
+                        Role.USER.type -> Color.Green
+                        else -> {
+                            Color.Green
+                        }
+                    },
+                    shape = RoundedCornerShape(15.dp)
+                )
                 .padding(8.dp)
 
         ) {
-            Text(text = text,
+            Text(
+                text = text,
                 color = Color.Black,
-                modifier = Modifier.widthIn(max = 250.dp))
+                modifier = Modifier.widthIn(max = 250.dp)
+            )
         }
     }
 }
@@ -64,13 +69,14 @@ fun MessagePreview() {
             modifier = Modifier.fillMaxSize()
         ) { innerPadding ->
             Column(
-                modifier = Modifier.fillMaxSize()
+                modifier = Modifier
+                    .fillMaxSize()
                     .padding(innerPadding),
                 verticalArrangement = Arrangement.Bottom
             ) {
                 MessageBubble(
-                    message = testRepository[0]
-                    )
+                    message = chatMessagesList[0]
+                )
             }
         }
 
