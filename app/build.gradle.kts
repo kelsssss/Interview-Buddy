@@ -5,8 +5,13 @@ plugins {
     id("com.google.devtools.ksp")
     id("androidx.room")
     id("com.google.dagger.hilt.android")
-//    alias(libs.plugins.gms)
+    alias(libs.plugins.gms)
+//    id("kotlinx-serialization")
+//    id("kotlinx-serialization") version "1.9.0"
+//    kotlin("plugin.serialization")
+    id("org.jetbrains.kotlin.plugin.serialization") version "1.9.0"
 }
+
 
 android {
     namespace = "com.example.interviewbuddy"
@@ -100,6 +105,9 @@ dependencies {
     implementation(libs.androidx.material.icons.extended)
 
     implementation(libs.lingver)
+
+    implementation(libs.kotlinx.serialization.json)
+
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

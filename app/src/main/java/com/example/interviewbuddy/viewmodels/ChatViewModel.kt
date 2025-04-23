@@ -1,4 +1,4 @@
-package com.example.interviewbuddy
+package com.example.interviewbuddy.viewmodels
 
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.lifecycle.ViewModel

@@ -1,6 +1,6 @@
-package com.example.interviewbuddy.ui.components
+package com.example.interviewbuddy.ui.screens
 
-//import androidx.compose.foundation.lazy.LazyColumn
+
 import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -30,16 +30,20 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.interviewbuddy.ChatViewModel
+import androidx.navigation.NavController
+import com.example.interviewbuddy.viewmodels.ChatViewModel
 import com.example.interviewbuddy.data.Message
 import com.example.interviewbuddy.data.Role
 import com.example.interviewbuddy.data.chatMessagesList
+import com.example.interviewbuddy.ui.components.MessageBubble
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 
 @Composable
-fun ChatScreen() {
+fun ChatScreen(
+    navController: NavController
+) {
     var text by remember { mutableStateOf("") }
     var listState = rememberLazyListState()
     var viewModel: ChatViewModel = viewModel()
