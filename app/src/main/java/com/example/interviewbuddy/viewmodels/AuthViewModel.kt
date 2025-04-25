@@ -9,7 +9,7 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 
 
-class AuthViewModel: ViewModel() {
+class AuthViewModel : ViewModel() {
 
     var auth = Firebase.auth
 
@@ -18,10 +18,10 @@ class AuthViewModel: ViewModel() {
         password: String,
         navController: NavController,
         context: Context,
-    ){
+    ) {
         auth.signInWithEmailAndPassword(email, password)
             .addOnCompleteListener { task ->
-                if(task.isSuccessful){
+                if (task.isSuccessful) {
                     Log.d("MyLog", "Успех авторизации")
                     navController.navigate("chat")
                 } else {
@@ -43,7 +43,7 @@ class AuthViewModel: ViewModel() {
     ) {
         auth.createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener { task ->
-                if(task.isSuccessful){
+                if (task.isSuccessful) {
                     Log.d("MyLog", "Успех регистрации")
                     navController.navigate("chat")
                 } else {

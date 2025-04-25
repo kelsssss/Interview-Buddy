@@ -5,7 +5,6 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import com.example.interviewbuddy.navigation.Navigation
-import com.example.interviewbuddy.ui.screens.ChatScreen
 import com.example.interviewbuddy.ui.theme.InterviewBuddyTheme
 
 class MainActivity : ComponentActivity() {

@@ -62,7 +62,7 @@ fun SignInScreen(
                 value = email,
                 onValueChange = { email = it },
                 label = { Text(text = "Email") },
-                placeholder = { Text(text = "примерпочты@mail.com")},
+                placeholder = { Text(text = "примерпочты@mail.com") },
             )
 
             Spacer(modifier = Modifier.height(20.dp))
@@ -70,8 +70,8 @@ fun SignInScreen(
             OutlinedTextField(
                 value = password,
                 onValueChange = { password = it },
-                label = { Text(text ="Пароль") },
-                placeholder = { Text(text = "пароль123" )},
+                label = { Text(text = "Пароль") },
+                placeholder = { Text(text = "пароль123") },
                 visualTransformation =
                     if (passwordIsVisible == false) {
                         PasswordVisualTransformation()
