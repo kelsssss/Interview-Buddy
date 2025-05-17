@@ -30,6 +30,7 @@ import androidx.compose.material3.TextField
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -41,6 +42,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import com.example.interviewbuddy.data.Chat
 import com.example.interviewbuddy.data.Message
 import com.example.interviewbuddy.data.Role
 import com.example.interviewbuddy.data.chatMessagesList
@@ -53,7 +55,9 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun ChatScreen(
-    navController: NavController
+    navController: NavController,
+//    chatMessages: SnapshotStateList<Message>
+    chatId: String
 ) {
     var drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
     var scope = rememberCoroutineScope()
@@ -62,29 +66,45 @@ fun ChatScreen(
     var chatViewModel: ChatViewModel = viewModel()
     var authViewModel: AuthViewModel = viewModel()
     var auth = authViewModel.auth
+
+    //Локальный список сообщений
+//    var currentChat = chatMessagesList
+    var chats = chatViewModel.chats.collectAsState()
+    var currentChat = chats.value.find { it.id == chatId } ?: Chat(messages = chatMessagesList)
+
+
     ModalNavigationDrawer(
         drawerState = drawerState,
         drawerContent = {
             ModalDrawerSheet(
                 modifier = Modifier
                     .width(270.dp)
-//                    .widthIn(150.dp)
 
             ) {
-                NavigationDrawerItem(
-                    label = { Text(text = "Log Out(test1)") },
-                    onClick = {},
-                    selected = false,
-
-
+                chats.value.asReversed().forEach {
+                    var chatSelected by remember { mutableStateOf(false) }
+                    NavigationDrawerItem(
+                        label = { Text(text = it.id) },
+                        onClick = {
+                            navController.navigate("chat/${it.id}")
+                        },
+                        selected = currentChat.id == it.id,
                     )
-
+                }
+                Spacer(modifier = Modifier.weight(1f))
                 NavigationDrawerItem(
-                    label = { Text(text = "Log In(test2)") },
-                    onClick = {},
+                    label = {
+                        Text(
+                            text = "Создать чат"
+                        )
+                    },
+                    onClick = {
+                        var newChatId = chatViewModel.createNewChat()
+                        navController.navigate("chat/${newChatId}")
+
+                    },
                     selected = false,
                 )
-                Spacer(modifier = Modifier.weight(1f))
                 NavigationDrawerItem(
                     label = {
                         Row {
@@ -142,7 +162,7 @@ fun ChatScreen(
                     state = listState
 
                 ) {
-                    items(chatMessagesList) {
+                    items(currentChat.messages) {
                         MessageBubble(
                             message = it
                         )
@@ -150,9 +170,9 @@ fun ChatScreen(
                     }
                 }
 
-                LaunchedEffect(chatMessagesList.size) {
+                LaunchedEffect(currentChat.messages.size) {
                     delay(100)
-                    listState.animateScrollToItem(chatMessagesList.lastIndex)
+                    listState.animateScrollToItem(currentChat.messages.lastIndex)
                 }
 
                 TextField(
@@ -163,7 +183,7 @@ fun ChatScreen(
                         IconButton(
                             onClick = {
                                 if (text != "") {
-                                    chatMessagesList.add(
+                                    currentChat.messages.add(
                                         Message(
                                             content = text,
                                             role = Role.USER.type
@@ -174,9 +194,9 @@ fun ChatScreen(
                                         try {
                                             Log.d("MyLog", "Try начался")
                                             var responce =
-                                                chatViewModel.askQuestion(chatMessagesList)
+                                                chatViewModel.askQuestion(currentChat.messages)
                                             Log.d("MyLog", "Данные получены")
-                                            chatMessagesList.add(responce.choices[0].message)
+                                            currentChat.messages.add(responce.choices[0].message)
                                             Log.d(
                                                 "MyLog",
                                                 "Данные получены и сообщение добавлено в репозиторий"

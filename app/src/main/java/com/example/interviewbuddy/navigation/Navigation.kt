@@ -2,12 +2,14 @@ package com.example.interviewbuddy.navigation
 
 import android.util.Log
 import androidx.compose.runtime.Composable
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.interviewbuddy.ui.screens.ChatScreen
 import com.example.interviewbuddy.ui.screens.SignInScreen
 import com.example.interviewbuddy.ui.screens.SignUpScreen
+import com.example.interviewbuddy.viewmodels.ChatViewModel
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 
@@ -15,7 +17,8 @@ import com.google.firebase.ktx.Firebase
 @Composable
 fun Navigation() {
     var auth = Firebase.auth
-
+    var chatViewModel: ChatViewModel = viewModel()
+    var entryChatId = chatViewModel.createNewChat()
     val navController = rememberNavController()
 
     Log.d("MyLog", "Почта зашедшего ${auth.currentUser?.email}")
@@ -36,8 +39,12 @@ fun Navigation() {
             SignUpScreen(navController = navController)
         }
 
-        composable("chat") {
-            ChatScreen(navController = navController)
+        composable("chat/{chatId}") { backStackEntry ->
+            var chatId = backStackEntry.arguments?.getString("chatId") ?: ""
+            ChatScreen(
+                navController = navController,
+                chatId = chatId
+            )
         }
     }
 }

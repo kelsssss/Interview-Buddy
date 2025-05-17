@@ -8,7 +8,6 @@ import retrofit2.http.POST
 
 
 interface ApiService {
-
     @POST("v1/chat/completions")
     suspend fun askQuestion(
         @Header("Content-Type") contentType: String = "application/json",

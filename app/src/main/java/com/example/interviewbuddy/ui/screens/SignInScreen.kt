@@ -43,7 +43,6 @@ fun SignInScreen(
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     var passwordIsVisible by remember { mutableStateOf(false) }
-//    Log.d("MyLog", "User email: ${auth.currentUser?.email}")
 
 
     Scaffold { innerPadding ->
