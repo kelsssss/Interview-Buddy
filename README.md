@@ -23,3 +23,8 @@
 - **Сеть**: Retrofit + OkHttp  
 - **База данных**: Firebase Firestore  
 - **Архитектура**: MVVM, Clean Architecture    
+
+## 📱 Скриншоты
+| Авторизация | Регистрация | Список чатов | Диалог с ИИ | 
+|-------------|-------------|-------------|-------------|
+| <img src="https://github.com/user-attachments/assets/62e4bc82-2517-4dff-a64a-10bcb2cf7e59" width="200"> | <img src="https://github.com/user-attachments/assets/6b1bee3f-39fb-47c8-96c3-5826e900a0a4" width="200"> | <img src="https://github.com/user-attachments/assets/85d93aa1-1b0f-4bf4-a213-6c4d0761cd9f" width="200"> | <img src="https://github.com/user-attachments/assets/bf44d2d9-b4b0-4213-a752-e7dfcd23e650" width="200"> |
