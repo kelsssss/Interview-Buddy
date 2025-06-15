@@ -56,7 +56,6 @@ import kotlinx.coroutines.launch
 @Composable
 fun ChatScreen(
     navController: NavController,
-//    chatMessages: SnapshotStateList<Message>
     chatId: String
 ) {
     var drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
@@ -68,7 +67,6 @@ fun ChatScreen(
     var auth = authViewModel.auth
 
     //Локальный список сообщений
-//    var currentChat = chatMessagesList
     var chats = chatViewModel.chats.collectAsState()
     var currentChat = chats.value.find { it.id == chatId } ?: Chat(messages = chatMessagesList)
 
@@ -82,7 +80,6 @@ fun ChatScreen(
 
             ) {
                 chats.value.asReversed().forEach {
-                    var chatSelected by remember { mutableStateOf(false) }
                     NavigationDrawerItem(
                         label = { Text(text = it.id) },
                         onClick = {
@@ -126,7 +123,6 @@ fun ChatScreen(
                 )
             }
         },
-//        modifier = Modifier.widthIn(150.dp)
     ) {
         Scaffold(
             modifier = Modifier.fillMaxSize()

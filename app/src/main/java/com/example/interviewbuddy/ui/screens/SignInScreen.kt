@@ -72,7 +72,7 @@ fun SignInScreen(
                 label = { Text(text = "Пароль") },
                 placeholder = { Text(text = "пароль123") },
                 visualTransformation =
-                    if (passwordIsVisible == false) {
+                    if (!passwordIsVisible) {
                         PasswordVisualTransformation()
                     } else {
                         VisualTransformation.None
