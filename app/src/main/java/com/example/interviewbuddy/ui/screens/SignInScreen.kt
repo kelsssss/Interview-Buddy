@@ -46,7 +46,6 @@ fun SignInScreen(
 
 
     Scaffold { innerPadding ->
-
         Column(
             modifier = Modifier
                 .fillMaxSize()

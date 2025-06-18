@@ -66,9 +66,17 @@ fun ChatScreen(
     var authViewModel: AuthViewModel = viewModel()
     var auth = authViewModel.auth
 
+
     //Локальный список сообщений
     var chats = chatViewModel.chats.collectAsState()
     var currentChat = chats.value.find { it.id == chatId } ?: Chat(messages = chatMessagesList)
+//        ?:
+
+//    run {
+//        Log.d("MyLog", "Чат создался в chatscreen")
+//        return
+//    }
+//    Chat(messages = chatMessagesList)
 
 
     ModalNavigationDrawer(
@@ -96,9 +104,10 @@ fun ChatScreen(
                         )
                     },
                     onClick = {
-                        var newChatId = chatViewModel.createNewChat()
-                        navController.navigate("chat/${newChatId}")
-
+                            var newChatId = chatViewModel.createNewChat()
+                        Log.d("MyLog", "Чат создался в скрине по кнопке")
+//                            navController.navigate("chat/${newChatId}")
+//                        navController.navigate("chat/new")
                     },
                     selected = false,
                 )
@@ -201,6 +210,7 @@ fun ChatScreen(
                                             Log.d("MyLog", "Ошибка словлена")
                                         }
                                     }
+                                    chatViewModel.addChat(currentChat)
                                     text = ""
                                 }
                             }

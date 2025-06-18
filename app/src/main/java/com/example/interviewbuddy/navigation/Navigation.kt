@@ -18,18 +18,19 @@ import com.google.firebase.ktx.Firebase
 fun Navigation() {
     var auth = Firebase.auth
     var chatViewModel: ChatViewModel = viewModel()
-    var entryChatId = chatViewModel.createNewChat()
     val navController = rememberNavController()
 
     Log.d("MyLog", "Почта зашедшего ${auth.currentUser?.email}")
 
     NavHost(
         navController = navController,
-        startDestination = if (auth.currentUser != null) {
-            "chat"
-        } else {
-            "signIn"
-        }
+//        startDestination = if (auth.currentUser != null) {
+//            "chat/new"
+//        } else {
+//            "signIn"
+//        }
+        startDestination = "signIn"
+
     ) {
         composable("signIn") {
             SignInScreen(navController = navController)
@@ -41,11 +42,30 @@ fun Navigation() {
 
         composable("chat/{chatId}") { backStackEntry ->
             var chatId = backStackEntry.arguments?.getString("chatId") ?: ""
-            ChatScreen(
-                navController = navController,
-                chatId = chatId
-            )
+            if(chatId == "new"){
+                Log.d("MyLog", "Чат создался в навигации chat/new")
+                var entryChatId = chatViewModel.createNewChat()
+                ChatScreen(
+                    navController = navController,
+                    chatId = entryChatId
+                )
+            } else {
+                ChatScreen(
+                    navController = navController,
+                    chatId = chatId
+                )
+            }
+
         }
+
+//        composable("chatnew") {
+//            Log.d("MyLog", "Чат создался в навигации chatnew")
+//            var entryChatId = chatViewModel.createNewChat()
+//            ChatScreen(
+//                navController = navController,
+//                chatId = entryChatId
+//            )
+//        }
     }
 }
 

@@ -23,7 +23,7 @@ class AuthViewModel : ViewModel() {
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
                     Log.d("MyLog", "Успех авторизации")
-                    navController.navigate("chat")
+                    navController.navigate("chat/new")
                 } else {
                     Log.d("MyLog", "Ошибка авторизации")
                     Toast.makeText(
@@ -45,7 +45,7 @@ class AuthViewModel : ViewModel() {
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
                     Log.d("MyLog", "Успех регистрации")
-                    navController.navigate("chat")
+                    navController.navigate("chat/new")
                 } else {
                     Log.d("MyLog", "Ошибка регистрации")
                     Toast.makeText(

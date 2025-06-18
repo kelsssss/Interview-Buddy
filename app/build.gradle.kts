@@ -6,9 +6,6 @@ plugins {
     id("androidx.room")
     id("com.google.dagger.hilt.android")
     alias(libs.plugins.gms)
-//    id("kotlinx-serialization")
-//    id("kotlinx-serialization") version "1.9.0"
-//    kotlin("plugin.serialization")
     id("org.jetbrains.kotlin.plugin.serialization") version "1.9.0"
 }
 
