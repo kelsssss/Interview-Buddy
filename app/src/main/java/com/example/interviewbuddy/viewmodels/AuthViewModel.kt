@@ -18,12 +18,13 @@ class AuthViewModel : ViewModel() {
         password: String,
         navController: NavController,
         context: Context,
+        lastChatId: String
     ) {
         auth.signInWithEmailAndPassword(email, password)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
                     Log.d("MyLog", "Успех авторизации")
-                    navController.navigate("chat/")
+                    navController.navigate("chat/${lastChatId}")
                 } else {
                     Log.d("MyLog", "Ошибка авторизации")
                     Toast.makeText(
@@ -40,12 +41,13 @@ class AuthViewModel : ViewModel() {
         password: String,
         navController: NavController,
         context: Context,
+        lastChatId: String
     ) {
         auth.createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
                     Log.d("MyLog", "Успех регистрации")
-                    navController.navigate("chat/")
+                    navController.navigate("chat/${lastChatId}")
                 } else {
                     Log.d("MyLog", "Ошибка регистрации")
                     Toast.makeText(
