@@ -26,7 +26,7 @@ fun Navigation() {
     NavHost(
         navController = navController,
         startDestination = if (auth.currentUser != null) {
-            "chat"
+            "chat/${entryChatId}"
         } else {
             "signIn"
         }
