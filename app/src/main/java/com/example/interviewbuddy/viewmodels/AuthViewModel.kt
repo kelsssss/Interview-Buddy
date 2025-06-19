@@ -13,6 +13,7 @@ class AuthViewModel : ViewModel() {
 
     var auth = Firebase.auth
 
+
     fun signIn(
         email: String,
         password: String,

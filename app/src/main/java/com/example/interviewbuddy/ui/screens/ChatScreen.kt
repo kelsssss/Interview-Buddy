@@ -49,6 +49,7 @@ import com.example.interviewbuddy.data.chatMessagesList
 import com.example.interviewbuddy.ui.components.MessageBubble
 import com.example.interviewbuddy.viewmodels.AuthViewModel
 import com.example.interviewbuddy.viewmodels.ChatViewModel
+import com.example.interviewbuddy.viewmodels.StoreViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -65,6 +66,7 @@ fun ChatScreen(
     var chatViewModel: ChatViewModel = viewModel()
     var authViewModel: AuthViewModel = viewModel()
     var auth = authViewModel.auth
+    var storeViewModel: StoreViewModel = viewModel()
 
     //Локальный список сообщений
     var chats = chatViewModel.chats.collectAsState()
@@ -197,6 +199,7 @@ fun ChatScreen(
                                                 "MyLog",
                                                 "Данные получены и сообщение добавлено в репозиторий"
                                             )
+                                            storeViewModel.saveChat(currentChat)
                                         } catch (e: Exception) {
                                             Log.d("MyLog", "Ошибка словлена")
                                         }

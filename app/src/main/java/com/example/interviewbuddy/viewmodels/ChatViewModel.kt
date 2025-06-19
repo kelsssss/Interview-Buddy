@@ -15,9 +15,8 @@ import kotlinx.coroutines.flow.update
 class ChatViewModel : ViewModel() {
 
     var api = Retrofit.apiService
-
-    //    var chats = MutableStateFlow<List<Chat>>(emptyList())
     var chats = ChatRepository.chats
+
     suspend fun askQuestion(messages: SnapshotStateList<Message>): QuestionResponce {
         return api.askQuestion(
             questionRequest = QuestionRequest(

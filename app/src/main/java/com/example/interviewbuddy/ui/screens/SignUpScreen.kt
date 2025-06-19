@@ -42,7 +42,7 @@ fun SignUpScreen(
     authViewModel: AuthViewModel = viewModel(),
     chatViewModel: ChatViewModel = viewModel(),
 
-) {
+    ) {
     var context = LocalContext.current
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
