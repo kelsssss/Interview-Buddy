@@ -29,7 +29,6 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
@@ -51,8 +50,6 @@ import com.example.interviewbuddy.ui.components.MessageBubble
 import com.example.interviewbuddy.viewmodels.AuthViewModel
 import com.example.interviewbuddy.viewmodels.ChatViewModel
 import com.example.interviewbuddy.viewmodels.StoreViewModel
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 
@@ -69,20 +66,13 @@ fun ChatScreen(
     var authViewModel: AuthViewModel = viewModel()
     var auth = authViewModel.auth
     var storeViewModel: StoreViewModel = viewModel()
-//    var gotMessage by remember { mutableStateOf("") }
+    var gotMessage by remember { mutableIntStateOf(0) }
 
-//    var loadedChats = storeViewModel.loadChats()
-//    LaunchedEffect(Unit) {
-//        chatViewModel.loadChats()
-//    }
-    //Локальный список сообщений
+
+    //Список сообщений
     var chats = chatViewModel.chats.collectAsState()
-//    chats.value = loadedChats
-//    var chats by chatViewModel.chats.collectAsState()
-    var currentChat = chats.value.find { it.id == chatId } ?: Chat(messages = chatMessagesList.collectAsState().value)
-//    var currentChat by remember { mutableStateOf(chats.value.find { it.id == chatId } ?: Chat(messages = chatMessagesList)) }
-//    var size = currentChat.messages.value.size
-//    chatViewModel.loadChats()
+    var currentChat = chats.value.find { it.id == chatId }
+        ?: Chat(messages = chatMessagesList.collectAsState().value)
 
 
     ModalNavigationDrawer(
@@ -194,34 +184,32 @@ fun ChatScreen(
                             onClick = {
                                 if (text != "") {
                                     currentChat.messages += (
-                                        Message(
-                                            content = text,
-                                            role = Role.USER.type
-                                        )
-                                    )
+                                            Message(
+                                                content = text,
+                                                role = Role.USER.type
+                                            )
+                                            )
                                     chatViewModel.viewModelScope.launch {
                                         Log.d("MyLog", "Scope начался")
                                         try {
                                             Log.d("MyLog", "Try начался")
-                                            var responce = chatViewModel.askQuestion(currentChat.messages)
+                                            var responce =
+                                                chatViewModel.askQuestion(currentChat.messages)
                                             Log.d("MyLog", "Данные получены")
+//                                            withContext(Dispatchers.Main) {
                                             currentChat.messages += (responce.choices[0].message)
-
-//                                            currentChat.messages.update {it + (responce.choices[0].message)}
-//                                            currentChat.messages.emit(currentChat.messages.value + responce.choices[0].message)
                                             Log.d(
                                                 "MyLog",
                                                 "Данные получены и сообщение добавлено в репозиторий"
                                             )
                                             storeViewModel.saveChat(currentChat)
                                             Log.d("MyTag", "Данные сохранены в firestore")
+                                            text = ""
                                         } catch (e: Exception) {
                                             Log.d("MyLog", "Ошибка словлена")
                                         }
-
-
                                     }
-                                    text = ""
+                                    text = "Ожидайте..."
                                 }
                             }
                         ) {

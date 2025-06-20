@@ -6,8 +6,6 @@ import com.example.interviewbuddy.data.ChatRepository
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
-import android.util.Log
-import com.google.firebase.firestore.toObjects
 
 
 class StoreViewModel : ViewModel() {

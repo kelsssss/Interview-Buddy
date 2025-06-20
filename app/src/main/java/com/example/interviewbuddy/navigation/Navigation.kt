@@ -18,7 +18,6 @@ import com.google.firebase.ktx.Firebase
 fun Navigation() {
     var auth = Firebase.auth
     var chatViewModel: ChatViewModel = viewModel()
-    chatViewModel.loadChats()
     var entryChatId = chatViewModel.createNewChat()
     val navController = rememberNavController()
 

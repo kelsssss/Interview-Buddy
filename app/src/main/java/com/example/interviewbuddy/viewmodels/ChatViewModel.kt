@@ -1,8 +1,6 @@
 package com.example.interviewbuddy.viewmodels
 
 import android.util.Log
-import androidx.compose.runtime.mutableStateListOf
-import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.lifecycle.ViewModel
 import com.example.interviewbuddy.data.Chat
 import com.example.interviewbuddy.data.ChatRepository
@@ -14,9 +12,7 @@ import com.example.interviewbuddy.network.Retrofit
 import com.google.firebase.Firebase
 import com.google.firebase.auth.auth
 import com.google.firebase.firestore.firestore
-import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
-import kotlin.collections.plus
 
 class ChatViewModel : ViewModel() {
 
@@ -39,7 +35,7 @@ class ChatViewModel : ViewModel() {
                     role = Role.ASSISTANT.type
                 )
             )
-        )
+                    )
         )
         chats.update { chats -> chats + newChat }
         return newChat.id
@@ -68,10 +64,10 @@ class ChatViewModel : ViewModel() {
             .collection("UserChats")
             .get()
             .addOnSuccessListener { querySnapshot ->
-                for(chat in querySnapshot.documents){
+                for (chat in querySnapshot.documents) {
                     Log.d("MyLog", "Полученный чат - ${chat.get("id")}")
-                    if(chat != null){
-                        chats.update { listOf( chat.toObject(Chat::class.java)!!) + it }
+                    if (chat != null) {
+                        chats.update { listOf(chat.toObject(Chat::class.java)!!) + it }
                     }
 
                 }
