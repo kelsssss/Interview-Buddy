@@ -68,8 +68,14 @@ fun ChatScreen(
     var auth = authViewModel.auth
     var storeViewModel: StoreViewModel = viewModel()
 
+//    var loadedChats = storeViewModel.loadChats()
+//    LaunchedEffect(Unit) {
+//        chatViewModel.loadChats()
+//    }
     //Локальный список сообщений
     var chats = chatViewModel.chats.collectAsState()
+//    chats.value = loadedChats
+//    var chats by chatViewModel.chats.collectAsState()
     var currentChat = chats.value.find { it.id == chatId } ?: Chat(messages = chatMessagesList)
 
 
