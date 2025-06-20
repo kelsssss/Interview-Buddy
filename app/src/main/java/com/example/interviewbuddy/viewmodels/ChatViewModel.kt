@@ -14,6 +14,7 @@ import com.example.interviewbuddy.network.Retrofit
 import com.google.firebase.Firebase
 import com.google.firebase.auth.auth
 import com.google.firebase.firestore.firestore
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
 import kotlin.collections.plus
 
@@ -22,7 +23,7 @@ class ChatViewModel : ViewModel() {
     var api = Retrofit.apiService
     var chats = ChatRepository.chats
 
-    suspend fun askQuestion(messages: SnapshotStateList<Message>): QuestionResponce {
+    suspend fun askQuestion(messages: List<Message>): QuestionResponce {
         return api.askQuestion(
             questionRequest = QuestionRequest(
                 messages = messages
@@ -32,12 +33,13 @@ class ChatViewModel : ViewModel() {
 
     fun createNewChat(): String {
         var newChat = Chat(
-            messages = mutableStateListOf(
+            messages = (mutableListOf(
                 Message(
                     content = "Привет! Чем я могу помочь?",
                     role = Role.ASSISTANT.type
                 )
             )
+        )
         )
         chats.update { chats -> chats + newChat }
         return newChat.id
@@ -51,6 +53,8 @@ class ChatViewModel : ViewModel() {
 //            }
 //        }
         chats.value.find { it.id == chatId }!!.messages.add(message)
+//            .plus(message)
+//            .add(message)
     }
 
 
@@ -67,7 +71,7 @@ class ChatViewModel : ViewModel() {
                 for(chat in querySnapshot.documents){
                     Log.d("MyLog", "Полученный чат - ${chat.get("id")}")
                     if(chat != null){
-                        chats.update { it + chat.toObject(Chat::class.java)!! }
+                        chats.update { listOf( chat.toObject(Chat::class.java)!!) + it }
                     }
 
                 }
@@ -78,4 +82,6 @@ class ChatViewModel : ViewModel() {
                 Log.d("MyTag", "Чаты не скачались с firestore")
             }
     }
+
+
 }

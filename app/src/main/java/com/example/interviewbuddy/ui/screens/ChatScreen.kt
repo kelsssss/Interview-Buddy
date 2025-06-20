@@ -32,6 +32,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -51,6 +52,7 @@ import com.example.interviewbuddy.viewmodels.AuthViewModel
 import com.example.interviewbuddy.viewmodels.ChatViewModel
 import com.example.interviewbuddy.viewmodels.StoreViewModel
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 
@@ -67,6 +69,7 @@ fun ChatScreen(
     var authViewModel: AuthViewModel = viewModel()
     var auth = authViewModel.auth
     var storeViewModel: StoreViewModel = viewModel()
+//    var gotMessage by remember { mutableStateOf("") }
 
 //    var loadedChats = storeViewModel.loadChats()
 //    LaunchedEffect(Unit) {
@@ -76,7 +79,10 @@ fun ChatScreen(
     var chats = chatViewModel.chats.collectAsState()
 //    chats.value = loadedChats
 //    var chats by chatViewModel.chats.collectAsState()
-    var currentChat = chats.value.find { it.id == chatId } ?: Chat(messages = chatMessagesList)
+    var currentChat = chats.value.find { it.id == chatId } ?: Chat(messages = chatMessagesList.collectAsState().value)
+//    var currentChat by remember { mutableStateOf(chats.value.find { it.id == chatId } ?: Chat(messages = chatMessagesList)) }
+//    var size = currentChat.messages.value.size
+//    chatViewModel.loadChats()
 
 
     ModalNavigationDrawer(
@@ -173,11 +179,11 @@ fun ChatScreen(
                         Spacer(modifier = Modifier.height(10.dp))
                     }
                 }
-
-                LaunchedEffect(currentChat.messages.size) {
-                    delay(100)
-                    listState.animateScrollToItem(currentChat.messages.lastIndex)
-                }
+                //TODO: ВКЛЮЧИТЬ ПОТОМ, ЭТО ПРОКРУТКА К НИЖНЕМУ СООБЩЕНИЮ
+//                LaunchedEffect(currentChat.messages.value.size) {
+//                    delay(100)
+//                    listState.animateScrollToItem(currentChat.messages.value.lastIndex)
+//                }
 
                 TextField(
                     value = text,
@@ -187,7 +193,7 @@ fun ChatScreen(
                         IconButton(
                             onClick = {
                                 if (text != "") {
-                                    currentChat.messages.add(
+                                    currentChat.messages += (
                                         Message(
                                             content = text,
                                             role = Role.USER.type
@@ -197,18 +203,23 @@ fun ChatScreen(
                                         Log.d("MyLog", "Scope начался")
                                         try {
                                             Log.d("MyLog", "Try начался")
-                                            var responce =
-                                                chatViewModel.askQuestion(currentChat.messages)
+                                            var responce = chatViewModel.askQuestion(currentChat.messages)
                                             Log.d("MyLog", "Данные получены")
-                                            currentChat.messages.add(responce.choices[0].message)
+                                            currentChat.messages += (responce.choices[0].message)
+
+//                                            currentChat.messages.update {it + (responce.choices[0].message)}
+//                                            currentChat.messages.emit(currentChat.messages.value + responce.choices[0].message)
                                             Log.d(
                                                 "MyLog",
                                                 "Данные получены и сообщение добавлено в репозиторий"
                                             )
                                             storeViewModel.saveChat(currentChat)
+                                            Log.d("MyTag", "Данные сохранены в firestore")
                                         } catch (e: Exception) {
                                             Log.d("MyLog", "Ошибка словлена")
                                         }
+
+
                                     }
                                     text = ""
                                 }

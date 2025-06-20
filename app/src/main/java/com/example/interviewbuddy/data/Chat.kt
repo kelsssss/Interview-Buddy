@@ -7,7 +7,6 @@ import java.util.UUID
 
 data class Chat(
     val id: String = UUID.randomUUID().toString(),
-    val messages: SnapshotStateList<Message> = mutableStateListOf(),
-//    val messages: MutableStateFlow<List<Message>> = MutableStateFlow(emptyList()),
+    val messages: MutableList<Message> = mutableListOf(),
     val title: String = "chat"
 )

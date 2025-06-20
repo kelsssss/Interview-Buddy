@@ -71,24 +71,24 @@ fun MessageBubble(
     }
 }
 
-@Preview(showBackground = true)
-@Composable
-fun MessagePreview() {
-    InterviewBuddyTheme(darkTheme = true) {
-        Scaffold(
-            modifier = Modifier.fillMaxSize()
-        ) { innerPadding ->
-            Column(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(innerPadding),
-                verticalArrangement = Arrangement.Bottom
-            ) {
-                MessageBubble(
-                    message = chatMessagesList[0]
-                )
-            }
-        }
-
-    }
-}
+//@Preview(showBackground = true)
+//@Composable
+//fun MessagePreview() {
+//    InterviewBuddyTheme(darkTheme = true) {
+//        Scaffold(
+//            modifier = Modifier.fillMaxSize()
+//        ) { innerPadding ->
+//            Column(
+//                modifier = Modifier
+//                    .fillMaxSize()
+//                    .padding(innerPadding),
+//                verticalArrangement = Arrangement.Bottom
+//            ) {
+//                MessageBubble(
+////                    message = chatMessagesList.[0]
+//                )
+//            }
+//        }
+//
+//    }
+//}
