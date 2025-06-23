@@ -29,6 +29,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
@@ -50,6 +51,7 @@ import com.example.interviewbuddy.ui.components.MessageBubble
 import com.example.interviewbuddy.viewmodels.AuthViewModel
 import com.example.interviewbuddy.viewmodels.ChatViewModel
 import com.example.interviewbuddy.viewmodels.StoreViewModel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 
@@ -71,8 +73,7 @@ fun ChatScreen(
 
     //Список сообщений
     var chats = chatViewModel.chats.collectAsState()
-    var currentChat = chats.value.find { it.id == chatId }
-        ?: Chat(messages = chatMessagesList.collectAsState().value)
+    var currentChat = chats.value.find { it.id == chatId } ?: Chat(messages = chatMessagesList.collectAsState().value)
 
 
     ModalNavigationDrawer(
@@ -100,9 +101,9 @@ fun ChatScreen(
                         )
                     },
                     onClick = {
-                        var newChatId = chatViewModel.createNewChat()
-                        navController.navigate("chat/${newChatId}")
-
+//                        var newChatId = chatViewModel.createNewChat()
+//                        navController.navigate("chat/${newChatId}")
+                        navController.navigate("choice")
                     },
                     selected = false,
                 )
@@ -170,10 +171,10 @@ fun ChatScreen(
                     }
                 }
                 //TODO: ВКЛЮЧИТЬ ПОТОМ, ЭТО ПРОКРУТКА К НИЖНЕМУ СООБЩЕНИЮ
-//                LaunchedEffect(currentChat.messages.value.size) {
-//                    delay(100)
-//                    listState.animateScrollToItem(currentChat.messages.value.lastIndex)
-//                }
+                LaunchedEffect(currentChat.messages.size) {
+                    delay(100)
+                    listState.animateScrollToItem(currentChat.messages.lastIndex)
+                }
 
                 TextField(
                     value = text,

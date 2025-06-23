@@ -7,6 +7,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.interviewbuddy.ui.screens.ChatScreen
+import com.example.interviewbuddy.ui.screens.ChoiceScreen
 import com.example.interviewbuddy.ui.screens.SignInScreen
 import com.example.interviewbuddy.ui.screens.SignUpScreen
 import com.example.interviewbuddy.viewmodels.ChatViewModel
@@ -45,6 +46,10 @@ fun Navigation() {
                 navController = navController,
                 chatId = chatId
             )
+        }
+
+        composable("choice"){
+            ChoiceScreen(navController = navController)
         }
     }
 }

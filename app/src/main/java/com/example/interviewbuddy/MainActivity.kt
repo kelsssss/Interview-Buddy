@@ -15,7 +15,6 @@ class MainActivity : ComponentActivity() {
         ChatViewModel().loadChats()
         setContent {
             InterviewBuddyTheme {
-
                 Navigation()
             }
         }

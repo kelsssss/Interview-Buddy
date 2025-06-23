@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import com.example.interviewbuddy.data.Chat
 import com.example.interviewbuddy.data.ChatRepository
 import com.example.interviewbuddy.data.Message
+import com.example.interviewbuddy.data.MessagesToUser
 import com.example.interviewbuddy.data.QuestionRequest
 import com.example.interviewbuddy.data.QuestionResponce
 import com.example.interviewbuddy.data.Role
@@ -31,7 +32,22 @@ class ChatViewModel : ViewModel() {
         var newChat = Chat(
             messages = (mutableListOf(
                 Message(
-                    content = "Привет! Чем я могу помочь?",
+                    content = MessagesToUser.newChatMessage,
+                    role = Role.ASSISTANT.type
+                )
+            )
+                    )
+        )
+        chats.update { chats -> chats + newChat }
+        return newChat.id
+    }
+
+    //TODO: Сюда запихнуть логику отправки промта и подоного
+    fun createInterviewChat(): String {
+        var newChat = Chat(
+            messages = (mutableListOf(
+                Message(
+                    content = MessagesToUser.newInterviewMessage,
                     role = Role.ASSISTANT.type
                 )
             )
