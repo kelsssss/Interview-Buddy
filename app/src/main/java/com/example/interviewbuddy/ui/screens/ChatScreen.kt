@@ -163,7 +163,10 @@ fun ChatScreen(
                     state = listState
 
                 ) {
-                    items(currentChat.messages) {
+                    items(
+                        items = currentChat.messages,
+//                        key = {it.id}
+                    ) {
                         MessageBubble(
                             message = it
                         )

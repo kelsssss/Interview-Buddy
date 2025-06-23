@@ -71,7 +71,9 @@ class ChatViewModel : ViewModel() {
 
 
     //TODO: не работает, исправить, мб вообще переписать
-    fun loadChats() {
+    fun loadChats(
+//        userUid: String
+    ) {
         var db = Firebase.firestore
         var userUid = Firebase.auth.currentUser?.uid ?: ""
 //        var result: List<Chat> = emptyList()
