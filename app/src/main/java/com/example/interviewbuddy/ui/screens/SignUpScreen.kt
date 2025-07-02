@@ -140,7 +140,9 @@ fun SignUpScreen(
                         password = password,
                         navController = navController,
                         context = context,
-                        lastChatId = lastChatId
+                        lastChatId = lastChatId,
+                        onComplete = {chatViewModel.loadChats()}
+
                     )
                 }
             ) {

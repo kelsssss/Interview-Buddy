@@ -4,6 +4,7 @@ import android.content.Context
 import android.util.Log
 import android.widget.Toast
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
@@ -19,13 +20,15 @@ class AuthViewModel : ViewModel() {
         password: String,
         navController: NavController,
         context: Context,
-        lastChatId: String
+        lastChatId: String,
+        onComplete: () -> Unit
     ) {
         auth.signInWithEmailAndPassword(email, password)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
                     Log.d("MyLog", "Успех авторизации")
                     navController.navigate("chat/${lastChatId}")
+                    onComplete()
                 } else {
                     Log.d("MyLog", "Ошибка авторизации")
                     Toast.makeText(
@@ -42,13 +45,15 @@ class AuthViewModel : ViewModel() {
         password: String,
         navController: NavController,
         context: Context,
-        lastChatId: String
+        lastChatId: String,
+        onComplete: () -> Unit
     ) {
         auth.createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
                     Log.d("MyLog", "Успех регистрации")
                     navController.navigate("chat/${lastChatId}")
+                    onComplete()
                 } else {
                     Log.d("MyLog", "Ошибка регистрации")
                     Toast.makeText(
