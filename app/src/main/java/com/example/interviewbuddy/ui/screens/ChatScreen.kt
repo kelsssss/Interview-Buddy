@@ -47,6 +47,7 @@ import com.example.interviewbuddy.data.Chat
 import com.example.interviewbuddy.data.Message
 import com.example.interviewbuddy.data.Role
 import com.example.interviewbuddy.data.chatMessagesList
+import com.example.interviewbuddy.funcs.toPrettyName
 import com.example.interviewbuddy.ui.components.MessageBubble
 import com.example.interviewbuddy.viewmodels.AuthViewModel
 import com.example.interviewbuddy.viewmodels.ChatViewModel
@@ -86,7 +87,7 @@ fun ChatScreen(
             ) {
                 chats.value.asReversed().forEach {
                     NavigationDrawerItem(
-                        label = { Text(text = it.id) },
+                        label = { Text(text = it.title.toPrettyName()) },
                         onClick = {
                             navController.navigate("chat/${it.id}")
                         },
@@ -173,7 +174,6 @@ fun ChatScreen(
                         Spacer(modifier = Modifier.height(10.dp))
                     }
                 }
-                //TODO: ВКЛЮЧИТЬ ПОТОМ, ЭТО ПРОКРУТКА К НИЖНЕМУ СООБЩЕНИЮ
                 LaunchedEffect(currentChat.messages.size) {
                     delay(100)
                     listState.animateScrollToItem(currentChat.messages.lastIndex)

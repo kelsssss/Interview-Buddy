@@ -50,8 +50,9 @@ class ChatViewModel : ViewModel() {
                     content = MessagesToUser.newInterviewMessage,
                     role = Role.ASSISTANT.type
                 )
-            )
-                    )
+            )),
+            title = "interview"
+
         )
         chats.update { chats -> chats + newChat }
         return newChat.id
