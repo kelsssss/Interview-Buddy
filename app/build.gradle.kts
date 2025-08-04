@@ -1,20 +1,12 @@
-import org.jetbrains.kotlin.gradle.dsl.JvmTarget
-import org.jetbrains.kotlin.gradle.tasks.KotlinJvmCompile
-
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
-    id("com.google.devtools.ksp")
-    id("androidx.room")
-    id("com.google.dagger.hilt.android")
+    alias(libs.plugins.ksp)
+    alias(libs.plugins.room)
+    alias(libs.plugins.hilt)
     alias(libs.plugins.gms)
-//    id("kotlinx-serialization")
-//    id("kotlinx-serialization") version "1.9.0"
-//    kotlin("plugin.serialization")
-    id("org.jetbrains.kotlin.plugin.serialization") version "2.2.0"
-
-
+    alias(libs.plugins.serialization)
 }
 
 
@@ -47,16 +39,7 @@ android {
     }
     kotlinOptions {
         jvmTarget = "11"
-//        jvmTarget = "11"
     }
-
-
-    //Типо так по новому будет
-//    tasks.named<KotlinJvmCompile>("compileKotlin") {
-//        compilerOptions {
-//            jvmTarget.set(JvmTarget.JVM_11)
-//        }
-//    }
 
     buildFeatures {
         compose = true
@@ -112,13 +95,9 @@ dependencies {
     implementation(libs.androidx.hilt.navigation.compose)
 
     //firebase
-//    implementation(platform(libs.firebase.bom))
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.auth)
     implementation(libs.firebase.firestore)
-
-//    implementation(libs.play.services)
-
 
     implementation(libs.androidx.material.icons.core)
     implementation(libs.androidx.material.icons.extended)

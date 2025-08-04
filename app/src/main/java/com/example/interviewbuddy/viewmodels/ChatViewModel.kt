@@ -70,7 +70,7 @@ class ChatViewModel : ViewModel() {
     }
 
 
-    //TODO: не работает, исправить, мб вообще переписать
+    //TODO: не работает, исправить, мб вообще переписать(upd работает вроед, перепроверить)
     fun loadChats(
 //        userUid: String
     ) {
