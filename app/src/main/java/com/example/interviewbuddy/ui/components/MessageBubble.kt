@@ -15,7 +15,8 @@ import androidx.compose.ui.unit.dp
 import com.example.interviewbuddy.data.Message
 import com.example.interviewbuddy.data.Role
 import com.halilibo.richtext.markdown.Markdown
-import com.halilibo.richtext.ui.RichText
+//import com.halilibo.richtext.ui.RichText
+import com.halilibo.richtext.ui.BasicRichText
 
 @Composable
 fun MessageBubble(
@@ -47,8 +48,8 @@ fun MessageBubble(
                 .padding(8.dp)
 
         ) {
-
-            RichText(
+            //Тут поменял RichText на этот
+            BasicRichText(
                 modifier = Modifier.widthIn(max = 250.dp),
             ) {
                 Markdown(

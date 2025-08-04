@@ -3,9 +3,9 @@ package com.example.interviewbuddy.viewmodels
 import androidx.lifecycle.ViewModel
 import com.example.interviewbuddy.data.Chat
 import com.example.interviewbuddy.data.ChatRepository
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.firestore.ktx.firestore
-import com.google.firebase.ktx.Firebase
+import com.google.firebase.Firebase
+import com.google.firebase.auth.auth
+import com.google.firebase.firestore.firestore
 
 
 class StoreViewModel : ViewModel() {

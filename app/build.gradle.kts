@@ -1,3 +1,6 @@
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+import org.jetbrains.kotlin.gradle.tasks.KotlinJvmCompile
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
@@ -9,18 +12,20 @@ plugins {
 //    id("kotlinx-serialization")
 //    id("kotlinx-serialization") version "1.9.0"
 //    kotlin("plugin.serialization")
-    id("org.jetbrains.kotlin.plugin.serialization") version "1.9.0"
+    id("org.jetbrains.kotlin.plugin.serialization") version "2.2.0"
+
+
 }
 
 
 android {
     namespace = "com.example.interviewbuddy"
-    compileSdk = 35
+    compileSdk = 36
 
     defaultConfig {
         applicationId = "com.example.interviewbuddy"
         minSdk = 24
-        targetSdk = 35
+        targetSdk = 36
         versionCode = 1
         versionName = "1.0"
 
@@ -42,7 +47,17 @@ android {
     }
     kotlinOptions {
         jvmTarget = "11"
+//        jvmTarget = "11"
     }
+
+
+    //Типо так по новому будет
+//    tasks.named<KotlinJvmCompile>("compileKotlin") {
+//        compilerOptions {
+//            jvmTarget.set(JvmTarget.JVM_11)
+//        }
+//    }
+
     buildFeatures {
         compose = true
     }
@@ -97,6 +112,7 @@ dependencies {
     implementation(libs.androidx.hilt.navigation.compose)
 
     //firebase
+//    implementation(platform(libs.firebase.bom))
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.auth)
     implementation(libs.firebase.firestore)

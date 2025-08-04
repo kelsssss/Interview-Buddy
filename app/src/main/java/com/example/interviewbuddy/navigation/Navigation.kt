@@ -11,8 +11,8 @@ import com.example.interviewbuddy.ui.screens.ChoiceScreen
 import com.example.interviewbuddy.ui.screens.SignInScreen
 import com.example.interviewbuddy.ui.screens.SignUpScreen
 import com.example.interviewbuddy.viewmodels.ChatViewModel
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.ktx.Firebase
+import com.google.firebase.Firebase
+import com.google.firebase.auth.auth
 
 
 @Composable

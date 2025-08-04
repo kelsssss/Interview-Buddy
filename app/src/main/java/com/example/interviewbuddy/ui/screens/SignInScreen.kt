@@ -35,8 +35,6 @@ import androidx.navigation.NavController
 import com.example.interviewbuddy.ui.theme.InterviewBuddyTheme
 import com.example.interviewbuddy.viewmodels.AuthViewModel
 import com.example.interviewbuddy.viewmodels.ChatViewModel
-import com.google.firebase.Firebase
-import com.google.firebase.auth.auth
 
 @Composable
 fun SignInScreen(

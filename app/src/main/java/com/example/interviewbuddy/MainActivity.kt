@@ -10,7 +10,6 @@ import com.example.interviewbuddy.ui.theme.InterviewBuddyTheme
 import com.example.interviewbuddy.viewmodels.ChatViewModel
 import com.google.firebase.Firebase
 import com.google.firebase.auth.auth
-import com.google.firebase.firestore.firestore
 
 class MainActivity : ComponentActivity() {
     private val chatViewModel: ChatViewModel by viewModels()
