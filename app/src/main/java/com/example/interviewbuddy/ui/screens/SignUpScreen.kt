@@ -161,7 +161,6 @@ fun SignUpScreen(
             ) {
                 Text(text = "Войти")
             }
-//        }
         }
     }
 }

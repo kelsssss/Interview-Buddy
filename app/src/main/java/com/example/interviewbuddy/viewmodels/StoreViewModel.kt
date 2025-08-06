@@ -21,22 +21,4 @@ class StoreViewModel : ViewModel() {
             .document(currentChat.id)
             .set(currentChat)
     }
-
-//    fun loadChats() {
-//        var result: List<Chat> = emptyList()
-//        db.collection("users")
-//            .document(userUid)
-//            .collection("UserChats")
-//            .get()
-//            .addOnSuccessListener { chats ->
-//                for(chat in chats){
-//                    Log.d("MyLog", "Полученный чат - ${chat.get("id")}")
-//                }
-//                result = chats.toObjects(Chat::class.java)
-//                localChats.value += result
-//            }
-//            .addOnFailureListener {
-//                Log.d("MyTag", "Чаты не скачались с firestore")
-//            }
-//    }
 }

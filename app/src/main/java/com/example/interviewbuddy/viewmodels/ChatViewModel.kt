@@ -42,7 +42,6 @@ class ChatViewModel : ViewModel() {
         return newChat.id
     }
 
-    //TODO: Сюда запихнуть логику отправки промта и подоного
     fun createInterviewChat(): String {
         var newChat = Chat(
             messages = (mutableListOf(
@@ -71,13 +70,10 @@ class ChatViewModel : ViewModel() {
     }
 
 
-    //TODO: не работает, исправить, мб вообще переписать(upd работает вроед, перепроверить)
     fun loadChats(
-//        userUid: String
     ) {
         var db = Firebase.firestore
         var userUid = Firebase.auth.currentUser?.uid ?: ""
-//        var result: List<Chat> = emptyList()
         db.collection("users")
             .document(userUid)
             .collection("UserChats")
@@ -90,8 +86,6 @@ class ChatViewModel : ViewModel() {
                     }
 
                 }
-//                result = querySnapshot.documents.
-//                chats.value += result
             }
             .addOnFailureListener {
                 Log.d("MyTag", "Чаты не скачались с firestore")

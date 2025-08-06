@@ -57,11 +57,6 @@ fun MessageBubble(
                 )
 
             }
-//            Text(
-//                text = text,
-//                color = Color.Black,
-//                modifier = Modifier.widthIn(max = 250.dp)
-//            )
         }
     }
 }
