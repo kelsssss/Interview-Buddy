@@ -7,30 +7,30 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.interviewbuddy.ui.screens.ChatScreen
+import com.example.interviewbuddy.ui.screens.ChoiceScreen
 import com.example.interviewbuddy.ui.screens.SignInScreen
 import com.example.interviewbuddy.ui.screens.SignUpScreen
 import com.example.interviewbuddy.viewmodels.ChatViewModel
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.ktx.Firebase
+import com.google.firebase.Firebase
+import com.google.firebase.auth.auth
 
 
 @Composable
 fun Navigation() {
     var auth = Firebase.auth
     var chatViewModel: ChatViewModel = viewModel()
+    var entryChatId = chatViewModel.createNewChat()
     val navController = rememberNavController()
 
     Log.d("MyLog", "Почта зашедшего ${auth.currentUser?.email}")
 
     NavHost(
         navController = navController,
-//        startDestination = if (auth.currentUser != null) {
-//            "chat/new"
-//        } else {
-//            "signIn"
-//        }
-        startDestination = "signIn"
-
+        startDestination = if (auth.currentUser != null) {
+            "chat/${entryChatId}"
+        } else {
+            "signIn"
+        }
     ) {
         composable("signIn") {
             SignInScreen(navController = navController)
@@ -42,30 +42,15 @@ fun Navigation() {
 
         composable("chat/{chatId}") { backStackEntry ->
             var chatId = backStackEntry.arguments?.getString("chatId") ?: ""
-            if(chatId == "new"){
-                Log.d("MyLog", "Чат создался в навигации chat/new")
-                var entryChatId = chatViewModel.createNewChat()
-                ChatScreen(
-                    navController = navController,
-                    chatId = entryChatId
-                )
-            } else {
-                ChatScreen(
-                    navController = navController,
-                    chatId = chatId
-                )
-            }
-
+            ChatScreen(
+                navController = navController,
+                chatId = chatId
+            )
         }
 
-//        composable("chatnew") {
-//            Log.d("MyLog", "Чат создался в навигации chatnew")
-//            var entryChatId = chatViewModel.createNewChat()
-//            ChatScreen(
-//                navController = navController,
-//                chatId = entryChatId
-//            )
-//        }
+        composable("choice"){
+            ChoiceScreen(navController = navController)
+        }
     }
 }
 

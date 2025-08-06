@@ -1,33 +1,26 @@
 package com.example.interviewbuddy.viewmodels
 
 import android.util.Log
-import androidx.compose.runtime.mutableStateListOf
-import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.lifecycle.ViewModel
 import com.example.interviewbuddy.data.Chat
 import com.example.interviewbuddy.data.ChatRepository
 import com.example.interviewbuddy.data.Message
+import com.example.interviewbuddy.data.MessagesToUser
 import com.example.interviewbuddy.data.QuestionRequest
 import com.example.interviewbuddy.data.QuestionResponce
 import com.example.interviewbuddy.data.Role
 import com.example.interviewbuddy.network.Retrofit
 import com.google.firebase.Firebase
-import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.auth.auth
 import com.google.firebase.firestore.firestore
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.update
-import okhttp3.internal.wait
 
 class ChatViewModel : ViewModel() {
 
     var api = Retrofit.apiService
-    val db = Firebase.firestore
-
-    //    var chats = MutableStateFlow<List<Chat>>(emptyList())
     var chats = ChatRepository.chats
 
-    suspend fun askQuestion(messages: SnapshotStateList<Message>): QuestionResponce {
+    suspend fun askQuestion(messages: List<Message>): QuestionResponce {
         return api.askQuestion(
             questionRequest = QuestionRequest(
                 messages = messages
@@ -36,14 +29,29 @@ class ChatViewModel : ViewModel() {
     }
 
     fun createNewChat(): String {
-//        Log.d("MyLog", "Вызов createnewchat")
         var newChat = Chat(
-            messages = mutableStateListOf(
+            messages = (mutableListOf(
                 Message(
-                    content = "Привет! Чем я могу помочь?",
+                    content = MessagesToUser.newChatMessage,
                     role = Role.ASSISTANT.type
                 )
             )
+                    )
+        )
+        chats.update { chats -> chats + newChat }
+        return newChat.id
+    }
+
+    fun createInterviewChat(): String {
+        var newChat = Chat(
+            messages = (mutableListOf(
+                Message(
+                    content = MessagesToUser.newInterviewMessage,
+                    role = Role.ASSISTANT.type
+                )
+            )),
+            title = "interview"
+
         )
         chats.update { chats -> chats + newChat }
         return newChat.id
@@ -57,15 +65,32 @@ class ChatViewModel : ViewModel() {
 //            }
 //        }
         chats.value.find { it.id == chatId }!!.messages.add(message)
+//            .plus(message)
+//            .add(message)
     }
 
-    //TODO: Это тестовое(без привязки к аккаунту, поменять позже)
-    fun addChat(chat: Chat){
-        db.collection("test").document().set(chat)
-            .addOnSuccessListener {
-                Log.d("MyLog", "Чат добавлен")
-            }.addOnFailureListener {
-                Log.d("MyLog", "Ошибка")
+
+    fun loadChats(
+    ) {
+        var db = Firebase.firestore
+        var userUid = Firebase.auth.currentUser?.uid ?: ""
+        db.collection("users")
+            .document(userUid)
+            .collection("UserChats")
+            .get()
+            .addOnSuccessListener { querySnapshot ->
+                for (chat in querySnapshot.documents) {
+                    Log.d("MyLog", "Полученный чат - ${chat.get("id")}")
+                    if (chat != null) {
+                        chats.update { listOf(chat.toObject(Chat::class.java)!!) + it }
+                    }
+
+                }
+            }
+            .addOnFailureListener {
+                Log.d("MyTag", "Чаты не скачались с firestore")
             }
     }
+
+
 }

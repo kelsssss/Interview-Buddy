@@ -17,6 +17,7 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -33,16 +34,20 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.interviewbuddy.ui.theme.InterviewBuddyTheme
 import com.example.interviewbuddy.viewmodels.AuthViewModel
+import com.example.interviewbuddy.viewmodels.ChatViewModel
 
 @Composable
 fun SignInScreen(
     navController: NavController,
-    authViewModel: AuthViewModel = viewModel()
+    authViewModel: AuthViewModel = viewModel(),
+    chatViewModel: ChatViewModel = viewModel(),
 ) {
     var context = LocalContext.current
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     var passwordIsVisible by remember { mutableStateOf(false) }
+
+    var lastChatId = chatViewModel.chats.collectAsState().value.last().id
 
 
     Scaffold { innerPadding ->
@@ -98,7 +103,9 @@ fun SignInScreen(
                         email = email,
                         password = password,
                         navController = navController,
-                        context = context
+                        context = context,
+                        lastChatId = lastChatId,
+                        onComplete = {chatViewModel.loadChats()}
                     )
 
                 }

@@ -32,6 +32,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -46,9 +47,11 @@ import com.example.interviewbuddy.data.Chat
 import com.example.interviewbuddy.data.Message
 import com.example.interviewbuddy.data.Role
 import com.example.interviewbuddy.data.chatMessagesList
+import com.example.interviewbuddy.funcs.toPrettyName
 import com.example.interviewbuddy.ui.components.MessageBubble
 import com.example.interviewbuddy.viewmodels.AuthViewModel
 import com.example.interviewbuddy.viewmodels.ChatViewModel
+import com.example.interviewbuddy.viewmodels.StoreViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -65,18 +68,13 @@ fun ChatScreen(
     var chatViewModel: ChatViewModel = viewModel()
     var authViewModel: AuthViewModel = viewModel()
     var auth = authViewModel.auth
+    var storeViewModel: StoreViewModel = viewModel()
+    var gotMessage by remember { mutableIntStateOf(0) }
 
 
-    //Локальный список сообщений
+    //Список сообщений
     var chats = chatViewModel.chats.collectAsState()
-    var currentChat = chats.value.find { it.id == chatId } ?: Chat(messages = chatMessagesList)
-//        ?:
-
-//    run {
-//        Log.d("MyLog", "Чат создался в chatscreen")
-//        return
-//    }
-//    Chat(messages = chatMessagesList)
+    var currentChat = chats.value.find { it.id == chatId } ?: Chat(messages = chatMessagesList.collectAsState().value)
 
 
     ModalNavigationDrawer(
@@ -89,7 +87,7 @@ fun ChatScreen(
             ) {
                 chats.value.asReversed().forEach {
                     NavigationDrawerItem(
-                        label = { Text(text = it.id) },
+                        label = { Text(text = it.title.toPrettyName()) },
                         onClick = {
                             navController.navigate("chat/${it.id}")
                         },
@@ -104,10 +102,9 @@ fun ChatScreen(
                         )
                     },
                     onClick = {
-                            var newChatId = chatViewModel.createNewChat()
-                        Log.d("MyLog", "Чат создался в скрине по кнопке")
-//                            navController.navigate("chat/${newChatId}")
-//                        navController.navigate("chat/new")
+//                        var newChatId = chatViewModel.createNewChat()
+//                        navController.navigate("chat/${newChatId}")
+                        navController.navigate("choice")
                     },
                     selected = false,
                 )
@@ -167,14 +164,16 @@ fun ChatScreen(
                     state = listState
 
                 ) {
-                    items(currentChat.messages) {
+                    items(
+                        items = currentChat.messages,
+//                        key = {it.id}
+                    ) {
                         MessageBubble(
                             message = it
                         )
                         Spacer(modifier = Modifier.height(10.dp))
                     }
                 }
-
                 LaunchedEffect(currentChat.messages.size) {
                     delay(100)
                     listState.animateScrollToItem(currentChat.messages.lastIndex)
@@ -188,12 +187,12 @@ fun ChatScreen(
                         IconButton(
                             onClick = {
                                 if (text != "") {
-                                    currentChat.messages.add(
-                                        Message(
-                                            content = text,
-                                            role = Role.USER.type
-                                        )
-                                    )
+                                    currentChat.messages += (
+                                            Message(
+                                                content = text,
+                                                role = Role.USER.type
+                                            )
+                                            )
                                     chatViewModel.viewModelScope.launch {
                                         Log.d("MyLog", "Scope начался")
                                         try {
@@ -201,17 +200,20 @@ fun ChatScreen(
                                             var responce =
                                                 chatViewModel.askQuestion(currentChat.messages)
                                             Log.d("MyLog", "Данные получены")
-                                            currentChat.messages.add(responce.choices[0].message)
+//                                            withContext(Dispatchers.Main) {
+                                            currentChat.messages += (responce.choices[0].message)
                                             Log.d(
                                                 "MyLog",
                                                 "Данные получены и сообщение добавлено в репозиторий"
                                             )
+                                            storeViewModel.saveChat(currentChat)
+                                            Log.d("MyTag", "Данные сохранены в firestore")
+                                            text = ""
                                         } catch (e: Exception) {
                                             Log.d("MyLog", "Ошибка словлена")
                                         }
                                     }
-                                    chatViewModel.addChat(currentChat)
-                                    text = ""
+                                    text = "Ожидайте..."
                                 }
                             }
                         ) {
